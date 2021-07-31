@@ -2,22 +2,18 @@
 // Created by alessiorocchi on 21/07/21.
 //
 
-#include <iostream>
-#include <thread>
 #include "Timer.h"
 
-Timer::Timer(int hour, int min, int sec) {
-    hoursRemaining = hour;
-    minRemaining = min;
-    secRemaining = sec;
+Timer::Timer(wxWindow* parent) : wxPanel(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize) {
+
 }
 
 Timer::~Timer() {}
 
 void Timer::display() {
-    std::cout << "ora: " << hoursRemaining << std::endl ;
-    std::cout << "minuti: " << minRemaining << std::endl;
-    std::cout << "secondi: " << secRemaining << std::endl;
+    std::cout << "tempo rimasto:" << std::endl << hoursRemaining << ":" ;
+    std::cout << minRemaining << ":";
+    std::cout << secRemaining << std::endl;
 }
 
 void Timer::startTimer() {
@@ -38,6 +34,5 @@ void Timer::startTimer() {
             }
         }
         display();
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
 }

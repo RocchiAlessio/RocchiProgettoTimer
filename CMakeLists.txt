@@ -8,7 +8,7 @@ set(wxWidgets_CONFIGURATION mswu)
 find_package(wxWidgets COMPONENTS core base REQUIRED)
 include(${wxWidgets_USE_FILE})
 
-set(SOURCE_FILES main.cpp Clock.cpp Clock.h Timer.cpp Timer.h)
+set(SOURCE_FILES main.cpp Clock.cpp Clock.h Timer.cpp Timer.h Application.cpp Application.h Mframe.cpp Mframe.h)
 add_executable(Timer ${SOURCE_FILES})
 
 target_link_libraries(Timer ${wxWidgets_LIBRARIES})

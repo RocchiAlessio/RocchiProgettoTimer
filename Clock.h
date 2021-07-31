@@ -5,9 +5,25 @@
 #ifndef ROCCHIPROGETTOTIMER_CLOCK_H
 #define ROCCHIPROGETTOTIMER_CLOCK_H
 
+#include <wx/wx.h>
 
-class Clock {
+class Clock : public wxPanel {
+public:
+    Clock(wxWindow* parent);
+    ~Clock();
+
+    wxDECLARE_EVENT_TABLE();
+
 private:
+    wxBoxSizer* mainSizer = nullptr;
+    wxBoxSizer* panelChioceSizer = nullptr;
+    wxButton* timerBtn = nullptr;
+    wxButton* clockBtn = nullptr;
+    wxTextCtrl* displayBox = nullptr;
+
+    static const int timerInterval = 1;
+    wxTimer* m_timer = nullptr;
+
     int hours;
     int minutes;
     int seconds;
@@ -19,30 +35,8 @@ private:
 
     void display();
 
-public:
-    Clock();
+    void OnTimer(wxTimerEvent&);
 
-    ~Clock();
-
-    void startClock();
-
-    int getHours() const;
-    void setHours(int hours);
-
-    int getMinutes() const;
-    void setMinutes(int minutes);
-
-    int getSeconds() const;
-    void setSeconds(int seconds);
-
-    int getDay() const;
-    void setDay(int day);
-
-    int getMonth() const;
-    void setMonth(int month);
-
-    int getYear() const;
-    void setYear(int year);
 
 };
 

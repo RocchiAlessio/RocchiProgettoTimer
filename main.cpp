@@ -1,8 +1,4 @@
 #include <wx/wx.h>
-#include "Clock.h"
-#include "Timer.h"
+#include "Application.h"
 
-int main(){
-    Timer *c = new Timer(0,0,1343);
-    c -> startTimer();
-}
+wxIMPLEMENT_APP(Application);

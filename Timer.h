@@ -5,20 +5,22 @@
 #ifndef ROCCHIPROGETTOTIMER_TIMER_H
 #define ROCCHIPROGETTOTIMER_TIMER_H
 
+#include <wx/wx.h>
 
-class Timer {
-private:
-    int secRemaining;
-    int minRemaining;
-    int hoursRemaining;
-
+class Timer : public wxPanel{
 public:
-    Timer(int hour, int min, int sec);
+    Timer(wxWindow* parent);
     ~Timer();
 
     void display();
 
     void startTimer();
+    void stopTimer();
+
+private:
+    int secRemaining;
+    int minRemaining;
+    int hoursRemaining;
 };
 
 

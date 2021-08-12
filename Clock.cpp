@@ -6,14 +6,12 @@
 #include "Clock.h"
 
 wxBEGIN_EVENT_TABLE(Clock, wxPanel)
-EVT_TIMER(3, Clock::OnTimer)
+EVT_TIMER(4, Clock::OnTimer)
 wxEND_EVENT_TABLE()
 
 
 Clock::Clock(wxWindow* parent) : wxPanel(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize) {
     mainSizer = new wxBoxSizer(wxVERTICAL);
-    SetSizer(mainSizer);
-    SetAutoLayout(true);
     panelChioceSizer = new wxBoxSizer(wxHORIZONTAL);
 
     wxFont font = wxFont(15, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
@@ -25,24 +23,44 @@ Clock::Clock(wxWindow* parent) : wxPanel(parent, wxID_ANY, wxDefaultPosition, wx
     timerBtn = new wxButton(this, 2, "Timer");
     timerBtn ->SetFont(font);
 
-    displayBox = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxTE_READONLY | wxTE_RICH2 );
-    displayBox ->SetFont(font);
-    wxLog::SetActiveTarget(new wxLogTextCtrl(displayBox));
+    stopwatchBtn = new wxButton(this, 3, "Stopwatch");
+    stopwatchBtn ->SetFont(font);
 
-    panelChioceSizer ->Add(timerBtn, 0, wxEXPAND | wxALL , 5);
+    displayBox = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxTE_READONLY | wxTE_RICH2 | wxTE_CENTER | wxBORDER_NONE);
+    displayBox ->SetFont(font);
+
+    displayBoxAM_PM = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxTE_READONLY | wxTE_RICH2 | wxTE_CENTER | wxBORDER_NONE);
+    displayBoxAM_PM ->SetFont(font);
+
+    displayBoxDate = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxTE_READONLY | wxTE_RICH2 | wxTE_CENTER | wxBORDER_NONE);
+    displayBoxDate ->SetFont(font);
+
     panelChioceSizer ->Add(clockBtn, 0, wxEXPAND | wxALL , 5);
+    panelChioceSizer ->Add(timerBtn, 0, wxEXPAND | wxALL , 5);
+    panelChioceSizer ->Add(stopwatchBtn, 0, wxEXPAND | wxALL , 5);
 
     mainSizer -> Add(panelChioceSizer, 0, wxALIGN_CENTER | wxALL , 0);
     mainSizer -> Add(displayBox, 1, wxEXPAND | wxALL , 5);
+    mainSizer -> Add(displayBoxAM_PM, 1, wxEXPAND | wxALL , 5);
+    mainSizer -> Add(displayBoxDate, 1, wxEXPAND | wxALL , 5);
 
-    m_timer = new wxTimer(this, 3);
+    m_timer = new wxTimer(this, 4);
     m_timer -> Start(timerInterval);
+
+    SetSizerAndFit(mainSizer);
+    SetAutoLayout(true);
 }
 
-Clock::~Clock() {}
+Clock::~Clock() {
+    delete m_timer;
+}
 
 void Clock::display() {
     std::string time;
+    std::string timeAM_PM;
+    std::string date;
+
+    //trasforma gli int delle ore in una stringa per la visualizzazione
     if(hours < 10)
         time = "0" + std::to_string(hours);
     else
@@ -60,7 +78,40 @@ void Clock::display() {
     else
         time = time + std::to_string(seconds);
 
+    //fa lo stesso ma per il formato AM/PM
+    if(hours < 13) {
+        timeAM_PM = "AM ";
+        if(hours < 10)
+            timeAM_PM = timeAM_PM + "0" + std::to_string(hours);
+        else
+            timeAM_PM = timeAM_PM + std::to_string(hours);
+    }
+    else {
+        timeAM_PM = "PM ";
+        if(hours - 12 < 10)
+            timeAM_PM = timeAM_PM + "0" + std::to_string(hours - 12);
+        else
+            timeAM_PM = timeAM_PM + std::to_string(hours - 12);
+    }
+    timeAM_PM = timeAM_PM + ":";
+
+    if(minutes < 10)
+        timeAM_PM =  timeAM_PM + "0" + std::to_string(minutes);
+    else
+        timeAM_PM = timeAM_PM + std::to_string(minutes);
+    timeAM_PM = timeAM_PM + ":";
+
+    if(seconds < 10)
+        timeAM_PM = timeAM_PM + "0" + std::to_string(seconds);
+    else
+        timeAM_PM = timeAM_PM + std::to_string(seconds);
+
+    //fa la stringa per la data
+    date = std::to_string(day) + "/" + std::to_string(month) + "/" + std::to_string(year);
+
     displayBox -> SetValue(time);
+    displayBoxAM_PM -> SetValue(timeAM_PM);
+    displayBoxDate -> SetValue(date);
 }
 
 void Clock::createCurrentTime() {
@@ -78,3 +129,4 @@ void Clock::OnTimer(wxTimerEvent &) {
     createCurrentTime();
     display();
 }
+

@@ -8,6 +8,7 @@
 #include <wx/wx.h>
 #include "Clock.h"
 #include "Timer.h"
+#include "Stopwatch.h"
 
 class Mframe : public wxFrame{
 public:
@@ -20,6 +21,10 @@ private:
     wxPanel* currentPanel = nullptr;
 
     void buildTimer(wxCommandEvent&);
+
+    void buildClock(wxCommandEvent&);
+
+    void buildStopwatch(wxCommandEvent&);
 };
 
 

@@ -10,18 +10,23 @@
 class Clock : public wxPanel {
 public:
     Clock(wxWindow* parent);
-    ~Clock();
+    virtual ~Clock();
 
-    wxDECLARE_EVENT_TABLE();
+wxDECLARE_EVENT_TABLE();
 
 private:
     wxBoxSizer* mainSizer = nullptr;
     wxBoxSizer* panelChioceSizer = nullptr;
+
     wxButton* timerBtn = nullptr;
     wxButton* clockBtn = nullptr;
-    wxTextCtrl* displayBox = nullptr;
+    wxButton* stopwatchBtn = nullptr;
 
-    static const int timerInterval = 1;
+    wxTextCtrl* displayBox = nullptr;
+    wxTextCtrl* displayBoxAM_PM = nullptr;
+    wxTextCtrl* displayBoxDate = nullptr;
+
+    static const int timerInterval = 1000;
     wxTimer* m_timer = nullptr;
 
     int hours;

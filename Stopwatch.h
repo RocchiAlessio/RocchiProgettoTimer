@@ -6,6 +6,7 @@
 #define ROCCHIPROGETTOTIMER_STOPWATCH_H
 
 #include <wx/wx.h>
+#include "StopwatchModel.h"
 
 class Stopwatch : public wxPanel {
 public:
@@ -27,21 +28,13 @@ private:
     wxTextCtrl* displayBox = nullptr;
     wxTextCtrl* displayBoxTimes = nullptr;
 
-    static const int timerInterval = 1000;
-    wxTimer* m_timer = nullptr;
-
-    int hours = 0;
-    int minutes = 0;
-    int seconds = 0;
-    bool isRunning = false;
+    StopwatchModel* model = nullptr;
 
     wxDECLARE_EVENT_TABLE();
 
     void startStopwatch(wxCommandEvent&);
 
     void OnTimer(wxTimerEvent&);
-
-    void display();
 
     void clear(wxCommandEvent&);
 };

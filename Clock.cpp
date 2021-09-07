@@ -44,89 +44,20 @@ Clock::Clock(wxWindow* parent) : wxPanel(parent, wxID_ANY, wxDefaultPosition, wx
     mainSizer -> Add(displayBoxAM_PM, 1, wxEXPAND | wxALL , 5);
     mainSizer -> Add(displayBoxDate, 1, wxEXPAND | wxALL , 5);
 
-    m_timer = new wxTimer(this, 4);
-    m_timer -> Start(timerInterval);
-
     SetSizerAndFit(mainSizer);
     SetAutoLayout(true);
+
+    model = new ClockModel(this);
 }
 
 Clock::~Clock() {
-    delete m_timer;
-}
-
-void Clock::display() {
-    std::string time;
-    std::string timeAM_PM;
-    std::string date;
-
-    //trasforma gli int delle ore in una stringa per la visualizzazione
-    if(hours < 10)
-        time = "0" + std::to_string(hours);
-    else
-        time = std::to_string(hours);
-    time = time + ":";
-
-    if(minutes < 10)
-        time =  time + "0" + std::to_string(minutes);
-    else
-        time = time + std::to_string(minutes);
-    time = time + ":";
-
-    if(seconds < 10)
-        time = time + "0" + std::to_string(seconds);
-    else
-        time = time + std::to_string(seconds);
-
-    //fa lo stesso ma per il formato AM/PM
-    if(hours < 13) {
-        timeAM_PM = "AM ";
-        if(hours < 10)
-            timeAM_PM = timeAM_PM + "0" + std::to_string(hours);
-        else
-            timeAM_PM = timeAM_PM + std::to_string(hours);
-    }
-    else {
-        timeAM_PM = "PM ";
-        if(hours - 12 < 10)
-            timeAM_PM = timeAM_PM + "0" + std::to_string(hours - 12);
-        else
-            timeAM_PM = timeAM_PM + std::to_string(hours - 12);
-    }
-    timeAM_PM = timeAM_PM + ":";
-
-    if(minutes < 10)
-        timeAM_PM =  timeAM_PM + "0" + std::to_string(minutes);
-    else
-        timeAM_PM = timeAM_PM + std::to_string(minutes);
-    timeAM_PM = timeAM_PM + ":";
-
-    if(seconds < 10)
-        timeAM_PM = timeAM_PM + "0" + std::to_string(seconds);
-    else
-        timeAM_PM = timeAM_PM + std::to_string(seconds);
-
-    //fa la stringa per la data
-    date = std::to_string(day) + "/" + std::to_string(month) + "/" + std::to_string(year);
-
-    displayBox -> SetValue(time);
-    displayBoxAM_PM -> SetValue(timeAM_PM);
-    displayBoxDate -> SetValue(date);
-}
-
-void Clock::createCurrentTime() {
-    std::time_t t = std::time(0);
-    std::tm* now = std::localtime(&t);
-    hours = now -> tm_hour;
-    minutes = now -> tm_min;
-    seconds = now -> tm_sec;
-    day = now -> tm_mday;
-    month = (now -> tm_mon) + 1;
-    year = (now -> tm_year) + 1900;
+    delete model;
 }
 
 void Clock::OnTimer(wxTimerEvent &) {
-    createCurrentTime();
-    display();
+    model ->createCurrentTime();
+    model ->createDate();
+    displayBox ->SetValue(model->getDates()[0]);
+    displayBoxAM_PM ->SetValue(model->getDates()[1]);
+    displayBoxDate ->SetValue(model->getDates()[2]);
 }
-

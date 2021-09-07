@@ -26,15 +26,21 @@ Timer::Timer(wxWindow* parent) : wxPanel(parent, wxID_ANY, wxDefaultPosition, wx
     stopwatchBtn ->SetFont(font);
 
     insertSizer = new wxBoxSizer(wxHORIZONTAL);
-    hourBox = new wxTextCtrl(this, wxID_ANY, "00", wxDefaultPosition, wxSize(100,30), wxTE_MULTILINE | wxTE_RICH2 | wxTE_CENTER);
+    hourBox = new wxTextCtrl(this, wxID_ANY, "00", wxDefaultPosition, wxSize(80,30), wxTE_MULTILINE | wxTE_RICH2 | wxTE_CENTER);
     hourBox ->SetFont(font);
-    minBox = new wxTextCtrl(this, wxID_ANY, "00", wxDefaultPosition, wxSize(100,30), wxTE_MULTILINE | wxTE_RICH2 | wxTE_CENTER);
+    separation1 = new wxTextCtrl(this, wxID_ANY, ":", wxDefaultPosition, wxSize(30,30), wxTE_MULTILINE | wxTE_RICH2 | wxTE_CENTER | wxTE_READONLY | wxBORDER_NONE);
+    separation1 ->SetFont(font);
+    minBox = new wxTextCtrl(this, wxID_ANY, "00", wxDefaultPosition, wxSize(80,30), wxTE_MULTILINE | wxTE_RICH2 | wxTE_CENTER);
     minBox ->SetFont(font);
-    secBox = new wxTextCtrl(this, wxID_ANY, "00", wxDefaultPosition, wxSize(100,30), wxTE_MULTILINE | wxTE_RICH2 | wxTE_CENTER);
+    separation2 = new wxTextCtrl(this, wxID_ANY, ":", wxDefaultPosition, wxSize(30,30), wxTE_MULTILINE | wxTE_RICH2 | wxTE_CENTER | wxTE_READONLY | wxBORDER_NONE);
+    separation2 ->SetFont(font);
+    secBox = new wxTextCtrl(this, wxID_ANY, "00", wxDefaultPosition, wxSize(80,30), wxTE_MULTILINE | wxTE_RICH2 | wxTE_CENTER);
     secBox ->SetFont(font);
 
     insertSizer ->Add(hourBox, 0, wxEXPAND | wxALL, 5);
+    insertSizer ->Add(separation1, 0, wxEXPAND | wxALL, 0);
     insertSizer ->Add(minBox, 0, wxEXPAND | wxALL, 5);
+    insertSizer ->Add(separation2,  0, wxEXPAND | wxALL, 0);
     insertSizer ->Add(secBox, 0, wxEXPAND | wxALL, 5);
 
     startBtn = new wxButton(this, 8, "Start", wxDefaultPosition, wxDefaultSize);
@@ -52,79 +58,43 @@ Timer::Timer(wxWindow* parent) : wxPanel(parent, wxID_ANY, wxDefaultPosition, wx
     mainSizer ->Add(startBtn, 0, wxEXPAND | wxALL, 5);
     mainSizer ->Add(displayBox, 1, wxEXPAND | wxALL , 5);
 
-    timer = new wxTimer(this, 9);
+    model = new TimerModel(this);
 
     SetSizerAndFit(mainSizer);
     SetAutoLayout(true);
 }
 
 Timer::~Timer() {
-    delete timer;
-}
-
-void Timer::display() {
-    std::string time;
-    if(hoursRemaining < 10)
-        time = "0" + std::to_string(hoursRemaining);
-    else
-        time = std::to_string(hoursRemaining);
-    time = time + ":";
-
-    if(minRemaining < 10)
-        time =  time + "0" + std::to_string(minRemaining);
-    else
-        time = time + std::to_string(minRemaining);
-    time = time + ":";
-
-    if(secRemaining < 10)
-        time = time + "0" + std::to_string(secRemaining);
-    else
-        time = time + std::to_string(secRemaining);
-
-    displayBox -> SetValue(time);
-}
-
-void Timer::OnTimer(wxTimerEvent &) {
-    if(secRemaining == 0 && minRemaining == 0 && hoursRemaining == 0){
-        timer ->Stop();
-        startBtn ->SetLabel("Start");
-        isRunning = false;
-    }
-    else{
-        if(secRemaining == 0 && minRemaining == 0){
-            secRemaining = 59;
-            minRemaining = 59;
-            hoursRemaining --;
-        }
-        else{
-            if(secRemaining == 0 && minRemaining != 0){
-                secRemaining = 59;
-                minRemaining --;
-            }
-            else{
-                secRemaining--;
-            }
-        }
-    }
-    display();
+    delete model;
 }
 
 void Timer::OnClick(wxCommandEvent&) {
-    if(!isRunning){
-        isRunning = true;
-        secRemaining = wxAtoi(secBox->GetValue());
-        minRemaining = wxAtoi(minBox->GetValue());
-        hoursRemaining = wxAtoi(hourBox->GetValue());
+    if(!model->isRunning1()){
+        model->setIsRunning(true);
+        model->setSecRemaining(wxAtoi(secBox->GetValue()));
+        model->setMinRemaining(wxAtoi(minBox->GetValue()));
+        model->setHoursRemaining(wxAtoi(hourBox->GetValue()));
+
+        secBox -> SetValue("00");
+        minBox -> SetValue("00");
+        hourBox -> SetValue("00");
 
         startBtn ->SetLabel("Stop");
 
-        timer ->Start(timerInterval);
+        model->start();
     }
     else{
-        isRunning = false;
+        model -> setIsRunning(false);
         startBtn ->SetLabel("Start");
-        timer ->Stop();
-
+        model -> stop();
     }
 }
 
+void Timer::OnTimer(wxTimerEvent &) {
+    model ->tick();
+    model ->createTime();
+    if(model->isRunning1() && model->getRemainingTime() == "00:00:00")
+        startBtn ->SetLabel("Start");
+    std::string time = model->getRemainingTime();
+    displayBox->SetValue(time);
+}

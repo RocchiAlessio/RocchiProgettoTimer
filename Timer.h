@@ -6,6 +6,7 @@
 #define ROCCHIPROGETTOTIMER_TIMER_H
 
 #include <wx/wx.h>
+#include "TimerModel.h"
 
 class Timer : public wxPanel{
 public:
@@ -23,24 +24,18 @@ private:
     wxButton* startBtn = nullptr;
     wxBoxSizer* insertSizer = nullptr;
     wxTextCtrl* hourBox = nullptr;
+    wxTextCtrl* separation1 = nullptr;
     wxTextCtrl* minBox = nullptr;
+    wxTextCtrl* separation2 = nullptr;
     wxTextCtrl* secBox = nullptr;
 
     wxTextCtrl* displayBox = nullptr;
 
-    int secRemaining;
-    int minRemaining;
-    int hoursRemaining;
-    bool isRunning = false;
-
-    wxTimer* timer = nullptr;
-    static const int timerInterval = 1000;
+    TimerModel* model = nullptr;
 
     wxDECLARE_EVENT_TABLE();
 
     void OnTimer(wxTimerEvent&);
-
-    void display();
 
     void OnClick(wxCommandEvent&);
 };

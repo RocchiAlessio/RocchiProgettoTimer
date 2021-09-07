@@ -6,6 +6,7 @@
 #define ROCCHIPROGETTOTIMER_CLOCK_H
 
 #include <wx/wx.h>
+#include "ClockModel.h"
 
 class Clock : public wxPanel {
 public:
@@ -26,23 +27,9 @@ private:
     wxTextCtrl* displayBoxAM_PM = nullptr;
     wxTextCtrl* displayBoxDate = nullptr;
 
-    static const int timerInterval = 1000;
-    wxTimer* m_timer = nullptr;
-
-    int hours;
-    int minutes;
-    int seconds;
-    int day;
-    int month;
-    int year;
-
-    void createCurrentTime();
-
-    void display();
+    ClockModel* model = nullptr;
 
     void OnTimer(wxTimerEvent&);
-
-
 };
 
 

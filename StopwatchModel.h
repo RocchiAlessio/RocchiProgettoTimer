@@ -10,7 +10,7 @@
 
 class StopwatchModel {
 public:
-    StopwatchModel(wxPanel* parent);
+    StopwatchModel(wxEvtHandler* parent);
     virtual ~StopwatchModel();
 
     void start();

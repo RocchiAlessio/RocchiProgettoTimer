@@ -4,7 +4,7 @@
 
 #include "TimerModel.h"
 
-TimerModel::TimerModel(wxPanel* parent){
+TimerModel::TimerModel(wxEvtHandler* parent){
     m_timer = new wxTimer(parent, 9);
 }
 

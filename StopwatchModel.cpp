@@ -4,7 +4,7 @@
 
 #include "StopwatchModel.h"
 
-StopwatchModel::StopwatchModel(wxPanel* parent) {
+StopwatchModel::StopwatchModel(wxEvtHandler* parent) {
     m_timer = new wxTimer(parent, 14);
 }
 

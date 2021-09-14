@@ -10,7 +10,7 @@
 
 class TimerModel {
 public:
-    TimerModel(wxPanel* parent);
+    TimerModel(wxEvtHandler* parent);
     virtual ~TimerModel();
 
     int getSecRemaining() const;

@@ -5,7 +5,7 @@
 #include <ctime>
 #include "ClockModel.h"
 
-ClockModel::ClockModel(wxPanel* parent) {
+ClockModel::ClockModel(wxEvtHandler* parent) {
     m_timer = new wxTimer(parent, 4);
     m_timer ->Start(timerInterval);
 }

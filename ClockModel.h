@@ -10,7 +10,7 @@
 
 class ClockModel{
 public:
-    ClockModel(wxPanel* parent);
+    ClockModel(wxEvtHandler* parent);
     virtual ~ClockModel();
 
     void createDate();

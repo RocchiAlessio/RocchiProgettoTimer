@@ -13,6 +13,8 @@ public:
     Stopwatch(wxWindow* parent);
     virtual ~Stopwatch();
 
+    StopwatchModel *getModel() const;
+
 private:
     wxBoxSizer* mainSizer = nullptr;
     wxBoxSizer* panelChioceSizer = nullptr;

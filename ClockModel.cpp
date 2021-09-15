@@ -88,3 +88,7 @@ void ClockModel::createDate() {
 const std::string *ClockModel::getDates() const {
     return dates;
 }
+
+wxTimer *ClockModel::getMTimer() const {
+    return m_timer;
+}

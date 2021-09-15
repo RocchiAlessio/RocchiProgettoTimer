@@ -13,6 +13,14 @@ public:
     Timer(wxWindow* parent);
     virtual ~Timer();
 
+    TimerModel *getModel() const;
+
+    wxDECLARE_EVENT_TABLE();
+
+    void OnTimer(wxTimerEvent&);
+
+    void OnClick(wxCommandEvent&);
+
 private:
     wxBoxSizer* mainSizer = nullptr;
     wxBoxSizer* panelChioceSizer = nullptr;
@@ -33,11 +41,6 @@ private:
 
     TimerModel* model = nullptr;
 
-    wxDECLARE_EVENT_TABLE();
-
-    void OnTimer(wxTimerEvent&);
-
-    void OnClick(wxCommandEvent&);
 };
 
 

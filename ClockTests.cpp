@@ -3,41 +3,49 @@
 //
 
 #include <gtest/gtest.h>
-#include <thread>
 #include "../ClockModel.h"
+#include "../Mframe.h"
 
-TEST(ClockTest, ChangingHourTest){
-    wxEvtHandler* handler = new wxEvtHandler();
-    ClockModel* clockModel = new ClockModel(handler);
+class ClockTest : public ::testing::Test {
+protected:
+    virtual void SetUp();
+    virtual void TearDown();
 
-    clockModel->createCurrentTime();
-    clockModel->createDate();
-    std::string data1 = clockModel->getDates()[0];
-    data1 = clockModel->getDates()[0];
+    Mframe* mframe;
+    Clock* clock;
+};
 
-    sleep(1);
-
-    clockModel->createCurrentTime();
-    clockModel->createDate();
-    std::string data2 = clockModel->getDates()[0];
-
-    ASSERT_NE(data1, data2);
+void ClockTest::SetUp() {
+    mframe = new Mframe();
+    clock = new Clock(mframe);
 }
 
-TEST(ClockTest, ChangingHourAMPMTest){
-    wxEvtHandler* handler = new wxEvtHandler();
-    ClockModel* clockModel = new ClockModel(handler);
+void ClockTest::TearDown() {
+    delete mframe;
+}
 
-    clockModel->createCurrentTime();
-    clockModel->createDate();
-    std::string data1 = clockModel->getDates()[1];
-    data1 = clockModel->getDates()[0];
+TEST_F(ClockTest, ChangingHourTest){
+    clock->getModel()->getMTimer()->Notify();
+
+    std::string data1 = clock->getModel()->getDates()[0];
 
     sleep(1);
+    clock->getModel()->getMTimer()->Notify();
 
-    clockModel->createCurrentTime();
-    clockModel->createDate();
-    std::string data2 = clockModel->getDates()[1];
+    std::string data2 = clock->getModel()->getDates()[0];
 
-    ASSERT_NE(data1, data2);
+    ASSERT_TRUE(data1.compare(data2) != 0); // == 0 se le stringhe sono uguali
+}
+
+TEST_F(ClockTest, ChangingHourAMPMTest) {
+    clock->getModel()->getMTimer()->Notify();
+
+    std::string data1 = clock->getModel()->getDates()[1];
+
+    sleep(1);
+    clock->getModel()->getMTimer()->Notify();
+
+    std::string data2 = clock->getModel()->getDates()[1];
+
+    ASSERT_TRUE(data1.compare(data2) != 0);
 }

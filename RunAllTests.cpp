@@ -3,9 +3,21 @@
 //
 
 #include <gtest/gtest.h>
+#include <wx/wx.h>
 
-int main(int argc, char* argv[]){
-    testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
+class TestApp: public wxApp{
+public:
+    virtual bool OnInit();
+    virtual int OnRun();
+};
+
+bool TestApp::OnInit() {
+    return true;
 }
 
+int TestApp::OnRun() {
+    ::testing::InitGoogleTest();
+    RUN_ALL_TESTS();
+}
+
+wxIMPLEMENT_APP(TestApp);

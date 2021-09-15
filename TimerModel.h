@@ -33,7 +33,6 @@ public:
 
     void setRemainingTime(const std::string &remainingTime);
 
-
     void createTime();
     void tick();
 

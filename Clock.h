@@ -13,6 +13,8 @@ public:
     Clock(wxWindow* parent);
     virtual ~Clock();
 
+    ClockModel *getModel() const;
+
 wxDECLARE_EVENT_TABLE();
 
 private:

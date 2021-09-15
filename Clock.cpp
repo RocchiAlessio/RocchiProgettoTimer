@@ -61,3 +61,7 @@ void Clock::OnTimer(wxTimerEvent &) {
     displayBoxAM_PM ->SetValue(model->getDates()[1]);
     displayBoxDate ->SetValue(model->getDates()[2]);
 }
+
+ClockModel *Clock::getModel() const {
+    return model;
+}

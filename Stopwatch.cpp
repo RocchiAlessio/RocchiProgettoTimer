@@ -79,3 +79,7 @@ void Stopwatch::clear(wxCommandEvent&) {
     std::string time = model->getActualTime();
     displayBox->SetValue(time);
 }
+
+StopwatchModel *Stopwatch::getModel() const {
+    return model;
+}

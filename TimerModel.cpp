@@ -90,7 +90,7 @@ void TimerModel::tick() {
             hoursRemaining --;
         }
         else{
-            if(secRemaining == 0 && minRemaining != 0){
+            if(secRemaining == 0){
                 secRemaining = 59;
                 minRemaining --;
             }

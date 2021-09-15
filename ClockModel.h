@@ -19,6 +19,8 @@ public:
 
     const std::string *getDates() const;
 
+    wxTimer *getMTimer() const;
+
 private:
     static const int timerInterval = 1000;
     wxTimer* m_timer = nullptr;

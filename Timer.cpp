@@ -98,3 +98,7 @@ void Timer::OnTimer(wxTimerEvent &) {
     std::string time = model->getRemainingTime();
     displayBox->SetValue(time);
 }
+
+TimerModel *Timer::getModel() const {
+    return model;
+}

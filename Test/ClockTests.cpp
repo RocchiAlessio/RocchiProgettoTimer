@@ -49,3 +49,39 @@ TEST_F(ClockTest, ChangingHourAMPMTest) {
 
     ASSERT_TRUE(data1.compare(data2) != 0);
 }
+
+TEST_F(ClockTest, CorrectVisualizationHour) {
+    clock->getModel()->setHours(13);
+    clock->getModel()->setMinutes(15);
+    clock->getModel()->setSeconds(45);
+
+    clock->getModel()->createDate();
+
+    std::string time =  clock->getModel()->toString(0);
+
+    ASSERT_TRUE(time.compare("13:15:45") == 0);
+}
+
+TEST_F(ClockTest, CorrectVisualizationHourAMPM) {
+    clock->getModel()->setHours(13);
+    clock->getModel()->setMinutes(15);
+    clock->getModel()->setSeconds(45);
+
+    clock->getModel()->createDate();
+
+    std::string time =  clock->getModel()->toString(1);
+
+    ASSERT_TRUE(time.compare("PM 01:15:45") == 0);
+}
+
+TEST_F(ClockTest, CorrectVisualizationDate) {
+    clock->getModel()->setDay(27);
+    clock->getModel()->setMonth(5);
+    clock->getModel()->setYear(2021);
+
+    clock->getModel()->createDate();
+
+    std::string date =  clock->getModel()->toString(2);
+
+    ASSERT_TRUE(date.compare("27/5/2021") == 0);
+}

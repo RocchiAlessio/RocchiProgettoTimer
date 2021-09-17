@@ -41,13 +41,44 @@ TEST_F(TimerTest, CorrectTick){
     ASSERT_TRUE(data1.compare(data2) != 0);
 }
 
-TEST_F(TimerTest, CorrectTickValues){
+TEST_F(TimerTest, CorrectTickValues) {
     timer->getModel()->tick();
 
     timer->getModel()->createTime();
     std::string data = timer->getModel()->getRemainingTime();
 
     ASSERT_TRUE(data.compare("00:59:59") == 0);
+}
+
+TEST_F(TimerTest, CorrectStart) {
+    timer->getModel()->start();
+
+    bool flag = timer->getModel()->isRunning1();
+
+    ASSERT_TRUE(flag);
+}
+
+TEST_F(TimerTest, CorrectStop) {
+    timer->getModel()->start();
+    timer->getModel()->stop();
+
+    bool flag = timer->getModel()->isRunning1();
+
+    ASSERT_TRUE(!flag);
+}
+
+TEST_F(TimerTest, CorrectPace) {
+    timer->getModel()->start();
+
+    for(int i=0; i<5; i++){
+        sleep(1);
+        timer->getModel()->tick();
+    }
+
+    timer->getModel()->createTime();
+    std::string remainingTime = timer->getModel()->getRemainingTime();
+
+    ASSERT_TRUE(remainingTime.compare("00:59:55") == 0);
 }
 
 

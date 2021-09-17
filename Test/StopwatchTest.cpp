@@ -45,3 +45,18 @@ TEST_F(StopwatchTest, CorrectReset) {
 
     ASSERT_TRUE(data.compare("00:00:00,00") == 0 );
 }
+
+TEST_F(StopwatchTest, CorrectStart){
+    stopwatch->getModel()->start();
+
+    bool flag = stopwatch->getModel()->isRunning1();
+    ASSERT_TRUE(flag);
+}
+
+TEST_F(StopwatchTest, CorrectStop){
+    stopwatch->getModel()->start();
+    stopwatch->getModel()->stop();
+
+    bool flag = stopwatch->getModel()->isRunning1();
+    ASSERT_TRUE(!flag);
+}

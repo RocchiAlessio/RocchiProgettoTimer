@@ -26,6 +26,12 @@ void ClockModel::createCurrentTime() {
     year = (now -> tm_year) + 1900;
 }
 
+std::string ClockModel::toString(int selection = 0) {
+    if(selection > 2 || selection < 0)
+        return dates[0];
+    return dates[selection];
+}
+
 void ClockModel::createDate() {
     std::string time;
     std::string timeAM_PM;
@@ -85,10 +91,30 @@ void ClockModel::createDate() {
     dates[2] = date;
 }
 
-const std::string *ClockModel::getDates() const {
-    return dates;
-}
-
 wxTimer *ClockModel::getMTimer() const {
     return m_timer;
+}
+
+void ClockModel::setHours(int hours) {
+    ClockModel::hours = hours;
+}
+
+void ClockModel::setMinutes(int minutes) {
+    ClockModel::minutes = minutes;
+}
+
+void ClockModel::setSeconds(int seconds) {
+    ClockModel::seconds = seconds;
+}
+
+void ClockModel::setDay(int day) {
+    ClockModel::day = day;
+}
+
+void ClockModel::setMonth(int month) {
+    ClockModel::month = month;
+}
+
+void ClockModel::setYear(int year) {
+    ClockModel::year = year;
 }

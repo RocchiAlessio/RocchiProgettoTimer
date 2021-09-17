@@ -57,9 +57,9 @@ Clock::~Clock() {
 void Clock::OnTimer(wxTimerEvent &) {
     model ->createCurrentTime();
     model ->createDate();
-    displayBox ->SetValue(model->getDates()[0]);
-    displayBoxAM_PM ->SetValue(model->getDates()[1]);
-    displayBoxDate ->SetValue(model->getDates()[2]);
+    displayBox ->SetValue(model->toString(0));
+    displayBoxAM_PM ->SetValue(model->toString(1));
+    displayBoxDate ->SetValue(model->toString(2));
 }
 
 ClockModel *Clock::getModel() const {

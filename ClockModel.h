@@ -15,11 +15,23 @@ public:
 
     void createDate();
 
+    std::string toString(int selection);
+
     void createCurrentTime();
 
-    const std::string *getDates() const;
-
     wxTimer *getMTimer() const;
+
+    void setHours(int hours);
+
+    void setMinutes(int minutes);
+
+    void setSeconds(int seconds);
+
+    void setDay(int day);
+
+    void setMonth(int month);
+
+    void setYear(int year);
 
 private:
     static const int timerInterval = 1000;
